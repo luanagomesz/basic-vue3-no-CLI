@@ -6,17 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style>
-      .box {
-        background-color: purple;
-        height: 200px;
-        width: 200px;
-      }
-      .box.two {
-        background-color: red;
-      }
-      .box.three {
-        background-color: blue;
-      }
       [v-cloak] {
         display: none;
       }
@@ -50,10 +39,14 @@
       });
       app.component("login-form", {
         template: `
-            <form @submit.prevent="handleSubmit"> 
+            <form @submit.prevent="handleSubmit">
                  <h1>{{title}} </h1>
-                <custom-input v-model="email" :type="'email'" :label="emailLabel"/>
-                 <custom-input v-model="password" :type="'password'" :label="passwordLabel"/>
+                <custom-input 
+                v-for="(input, i) in inputs"
+                :key="i"
+                v-model="input.value" 
+                :type="input.type" 
+                :label="input.label"/>
                 <button>Login</button>
             </form>
         `,
@@ -61,21 +54,21 @@
         data() {
           return {
             title: "Login Form",
-            email: "",
-            password: "",
-            emailLabel: "Email",
-            passwordLabel: "Password",
+            inputs: [
+              { label: "Email", value: "", type: "email" },
+              { label: "Password", value: "", type: "password" },
+            ],
           };
         },
         methods: {
           handleSubmit() {
-            console.log(this.email, this.password);
+            console.log(this.inputs[0].value, this.inputs[1].value);
           },
         },
       });
       app.component("custom-input", {
-        template: ` 
-          <label> 
+        template: `
+          <label>
           {{label}}
           <input  :type="type" v-model="inputValue"/>
           </label>`,
