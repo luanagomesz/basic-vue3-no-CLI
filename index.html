@@ -20,15 +20,15 @@
       [v-cloak] {
         display: none;
       }
+      input {
+        margin: 10px;
+        display: block;
+      }
     </style>
   </head>
   <body>
     <div id="app" v-cloak>
-      {{greeting}}
-      <input @keyup.enter="greet(this.greeting + '!!!!')" v-model="greeting" />
-      <hr />
-      <button v-on:click="toggleBox">Show Box</button>
-      <div v-if="isVisible" class="box"></div>
+      <login-form />
     </div>
     <script src="https://unpkg.com/vue@3"></script>
     <script>
@@ -45,6 +45,28 @@
           },
           greet(greeting) {
             console.log(greeting);
+          },
+        },
+      });
+      app.component("login-form", {
+        template: `
+            <form @submit.prevent="handleSubmit"> 
+                 <h1>{{title}} </h1>
+                <input type="email" v-model="email"/>
+                 <input type="password" v-model="password"/>
+                <button>Login</button>
+            </form>
+        `,
+        data() {
+          return {
+            title: "Login Form",
+            email: "",
+            password: "",
+          };
+        },
+        methods: {
+          handleSubmit() {
+            console.log(this.email, this.password);
           },
         },
       });
